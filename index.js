@@ -11,8 +11,6 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
-// DbName : superEx
-//Dbpassword : 2u9Pz889KPuAVZJg
 
 
 
