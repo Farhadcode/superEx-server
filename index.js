@@ -4,7 +4,7 @@ const ObjectId = require('mongodb').ObjectID;
 const cors = require('cors');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 require('dotenv').config();
 
 // middleware
@@ -16,7 +16,7 @@ app.use(express.json());
 
 
 
-const uri = "mongodb+srv://superEx:2u9Pz889KPuAVZJg@cluster0.f6j7z.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.f6j7z.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
@@ -40,7 +40,7 @@ async function run() {
 
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('getting specific service id :', id);
+            //console.log('getting specific service id :', id);
             const query = { _id: ObjectId(id) };
             const service = await servicesCollection.findOne(query);
             res.json(service);
@@ -81,7 +81,7 @@ async function run() {
             res.send(result);
         });
 
-        // Delete My Event
+        // Delete My Order
 
         app.delete("/myOrders/:id", async (req, res) => {
             console.log(req.params.id);
@@ -91,6 +91,22 @@ async function run() {
             res.send(result);
         });
 
+        //Admin  get all Order & and Order Management 
+
+        app.get('/allOrders', async (req, res) => {
+            const result = await orderCollection.find({}).toArray();
+            res.send(result);
+            // console.log(result);
+        })
+        // Admin Delet Order
+
+        app.delete("/allOrders/:id", async (req, res) => {
+            //console.log(req.params.id);
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
 
 
         // DELETE API
