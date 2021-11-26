@@ -79,7 +79,7 @@ async function run() {
             res.send(result);
         });
 
-        // Delete My Order
+        // Delete My Orders 
 
         app.delete("/myOrders/:id", async (req, res) => {
             console.log(req.params.id);
